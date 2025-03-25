@@ -1,20 +1,23 @@
+// TODO: Replace file with our rust raspi kafka producer
+// labels: help wanted, enhancement
+// milestone: raspi-integration
+
 const { Kafka } = require("kafkajs");
 
 // Create a Kafka client instance with the broker address
 const kafka = new Kafka({
-    clientId: 'traffic-consumer',
-    brokers: ['127.0.0.1:29092'],  // Use 127.0.0.1 instead of localhost
-    retry: {
-      initialRetryTime: 3000,      // Wait 3s before retrying
-      retries: 10                  // Retry 10 times
-    }
-  });
+  clientId: "traffic-consumer",
+  brokers: ["127.0.0.1:29092"], // Use 127.0.0.1 instead of localhost
+  retry: {
+    initialRetryTime: 3000, // Wait 3s before retrying
+    retries: 10, // Retry 10 times
+  },
+});
 
-
-  // Helper functions for realistic data generation
-const randomChoice = (options) => options[Math.floor(Math.random() * options.length)];
+// Helper functions for realistic data generation
+const randomChoice = (options) =>
+  options[Math.floor(Math.random() * options.length)];
 const randomSubcount = (max) => Math.floor(Math.random() * (max + 1));
-
 
 const createTrafficData = () => ({
   trafficData: {
@@ -22,32 +25,32 @@ const createTrafficData = () => ({
     travelTime: Math.floor(Math.random() * 60),
     vehicleNumber: Math.floor(Math.random() * 200),
     speed: Math.floor(Math.random() * 80),
-    directionChange: randomChoice(['left', 'right', 'none']),
+    directionChange: randomChoice(["left", "right", "none"]),
     pedestrianCount: Math.floor(Math.random() * 50),
     bicycleCount: Math.floor(Math.random() * 20),
     heavyVehicleCount: Math.floor(Math.random() * 10),
     incidentDetected: Math.random() > 0.8,
-    visibility: randomChoice(['good', 'fair', 'poor']),
-    weatherConditions: randomChoice(['sunny', 'rain', 'snow', 'fog']),
-    roadCondition: randomChoice(['dry', 'wet', 'icy']),
-    congestionLevel: randomChoice(['low', 'medium', 'high']),
-    averageVehicleSize: randomChoice(['small', 'medium', 'large']),
+    visibility: randomChoice(["good", "fair", "poor"]),
+    weatherConditions: randomChoice(["sunny", "rain", "snow", "fog"]),
+    roadCondition: randomChoice(["dry", "wet", "icy"]),
+    congestionLevel: randomChoice(["low", "medium", "high"]),
+    averageVehicleSize: randomChoice(["small", "medium", "large"]),
     vehicleTypeDistribution: {
       cars: Math.floor(Math.random() * 150),
       buses: Math.floor(Math.random() * 10),
       motorcycles: Math.floor(Math.random() * 30),
-      trucks: Math.floor(Math.random() * 15)
+      trucks: Math.floor(Math.random() * 15),
     },
-    trafficFlowDirection: randomChoice(['north-south', 'east-west', 'both']),
+    trafficFlowDirection: randomChoice(["north-south", "east-west", "both"]),
     redLightViolations: Math.floor(Math.random() * 5),
     temperature: 15 + Math.floor(Math.random() * 25),
     humidity: Math.floor(Math.random() * 100),
     windSpeed: Math.floor(Math.random() * 40),
     airQualityIndex: Math.floor(Math.random() * 500),
     nearMissEvents: Math.floor(Math.random() * 5),
-    accidentSeverity: randomChoice(['none', 'minor', 'major']),
+    accidentSeverity: randomChoice(["none", "minor", "major"]),
     roadworkDetected: Math.random() > 0.9,
-    illegalParkingCases: Math.floor(Math.random() * 10)
+    illegalParkingCases: Math.floor(Math.random() * 10),
   },
   intersectionData: {
     stoppedVehiclesCount: Math.floor(Math.random() * 50),
@@ -55,8 +58,8 @@ const createTrafficData = () => ({
     leftTurnCount: Math.floor(Math.random() * 30),
     rightTurnCount: Math.floor(Math.random() * 30),
     averageSpeedByDirection: {
-      'north-south': Math.floor(Math.random() * 60),
-      'east-west': Math.floor(Math.random() * 60)
+      "north-south": Math.floor(Math.random() * 60),
+      "east-west": Math.floor(Math.random() * 60),
     },
     laneOccupancy: Math.floor(Math.random() * 100),
     intersectionBlockingVehicles: Math.floor(Math.random() * 5),
@@ -68,23 +71,22 @@ const createTrafficData = () => ({
     queueLengthByLane: {
       lane1: Math.floor(Math.random() * 20),
       lane2: Math.floor(Math.random() * 20),
-      lane3: Math.floor(Math.random() * 20)
+      lane3: Math.floor(Math.random() * 20),
     },
-    intersectionCongestionLevel: randomChoice(['low', 'medium', 'high']),
+    intersectionCongestionLevel: randomChoice(["low", "medium", "high"]),
     intersectionCrossingTime: Math.floor(Math.random() * 120),
-    trafficLightImpact: randomChoice(['low', 'moderate', 'high']),
+    trafficLightImpact: randomChoice(["low", "moderate", "high"]),
     nearMissIncidents: Math.floor(Math.random() * 5),
     collisionCount: Math.floor(Math.random() * 3),
     suddenBrakingEvents: Math.floor(Math.random() * 10),
     illegalParkingDetected: Math.random() > 0.8,
     wrongWayVehicles: Math.floor(Math.random() * 2),
     ambientLightLevel: Math.floor(Math.random() * 200),
-    trafficLightStatus: randomChoice(['red', 'yellow', 'green']),
-    localWeatherConditions: randomChoice(['clear', 'rain', 'snow', 'fog']),
-    fogOrSmokeDetected: Math.random() > 0.85
-  }
+    trafficLightStatus: randomChoice(["red", "yellow", "green"]),
+    localWeatherConditions: randomChoice(["clear", "rain", "snow", "fog"]),
+    fogOrSmokeDetected: Math.random() > 0.85,
+  },
 });
-
 
 // Function to create the topic if it doesn't exist
 const createTopic = async () => {
