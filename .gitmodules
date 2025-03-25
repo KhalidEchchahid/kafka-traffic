@@ -1,0 +1,3 @@
+[submodule "rust-producer"]
+	path = rust-producer
+	url = git@github.com:aymanamkassou/Rust-Traffic-Simulator.git
