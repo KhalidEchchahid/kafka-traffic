@@ -4,16 +4,16 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-// Configure the backend API URL
+
 const BACKEND_API_URL = process.env.BACKEND_API_URL || "";
 
-// Initialize Kafka client with a unique clientId and broker address
+
 const kafka = new Kafka({
   clientId: "traffic-consumer",
   brokers: [process.env.KAFKA_BROKER || ""],
 });
 
-// Create a consumer instance within a consumer group
+
 const consumer = kafka.consumer({ groupId: "traffic-group" });
 
 // Helper function to send data to the backend
@@ -27,7 +27,6 @@ async function sendToBackend(endpoint, data) {
     if (error.response) {
       console.error(`Backend response: ${error.response.status} - ${JSON.stringify(error.response.data)}`);
     }
-    // In a production system, you might want to implement retry logic here
     throw error;
   }
 }
